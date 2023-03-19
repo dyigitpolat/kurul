@@ -9,7 +9,7 @@ from prompts.prompts import Prompts
 class Kurul:
     def __init__(self):
         self.first_assistant = OpenAIClient()
-        self.first_assistant.respond(Prompts.pre_prompt)
+        # self.first_assistant.respond(Prompts.pre_prompt)
 
         self.context_manager = ContextManager([self.first_assistant.chat_history])
 

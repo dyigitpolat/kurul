@@ -4,7 +4,7 @@ import openai
 import time
 
 class OpenAIClient:
-    def __init__(self, model="gpt-3.5-turbo"):
+    def __init__(self, model="gpt-4"):
         self.chat_history = ChatHistory()
         self.model = model
 
