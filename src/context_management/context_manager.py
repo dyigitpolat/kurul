@@ -8,11 +8,11 @@ class ContextManager:
         self.chat_histories = chat_histories
         self.context_summary = ""
 
-    def __partial_distill(self, chat_history, limit, tail_length):
+    def __partial_distill(self, chat_history, limit, head_length):
 
         if len(chat_history) > limit:
-            tail = ChatHistory(list(chat_history.messages[:tail_length]))
-            head = ChatHistory(list(chat_history.messages[tail_length:]))
+            tail = ChatHistory(list(chat_history.messages[:-head_length]))
+            head = ChatHistory(list(chat_history.messages[-head_length:]))
             distilled_tail = ChatHistoryDistillation().distill(tail)
             chat_history.messages = list(distilled_tail.messages + head.messages)
 
@@ -33,7 +33,7 @@ class ContextManager:
 
     def update(self):
         for chat_history in self.chat_histories:
-            self.__partial_distill(chat_history, 7, 5)
+            self.__partial_distill(chat_history, 7, 2)
         
         self.__summarize_context()
         

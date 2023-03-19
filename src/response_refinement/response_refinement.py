@@ -10,7 +10,7 @@ class ResponseRefinement:
         assistant = OpenAIClient()
 
         prompt_for_assistant = "\n\n--\n\n"
-        prompt_for_assistant += chat_history.to_text()
+        prompt_for_assistant += chat_history.to_text().replace("user:::", "A:").replace("assistant:::", "B:")
         prompt_for_assistant += "\n\n--\n\n"
         prompt_for_assistant += "Analyst:\n"
         prompt_for_assistant += skepticism
