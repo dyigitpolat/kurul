@@ -1,5 +1,5 @@
 from chat_history.chat_history import ChatHistory
-from language_model_handling.gpt4_client import GPT4Client
+from language_model_handling.openai_client import OpenAIClient
 from prompts.prompts import Prompts
 
 class ChatHistoryDistillation:
@@ -8,9 +8,9 @@ class ChatHistoryDistillation:
         
     def distill(self, chat_history):
         distillation_prompt = Prompts.conversation_distillation_prompt
-        assistant = GPT4Client()
+        assistant = OpenAIClient()
 
-        prompt_for_assistant = "--\n\n"
+        prompt_for_assistant = "\n\n--\n\n"
         prompt_for_assistant += chat_history.to_text()
         prompt_for_assistant += "\n\n--\n\n"
         prompt_for_assistant += distillation_prompt
@@ -21,8 +21,9 @@ class ChatHistoryDistillation:
         for line in response.split("\n"):
             line = line.strip()
             if line != "":
-                role, content = line.split(":::")
-                distilled_chat_history.append({"role": role, "content": content})
+                if len(line.split(":::")) == 2:
+                    role, content = line.split(":::")
+                    distilled_chat_history.append({"role": role, "content": content})
 
         return distilled_chat_history
 

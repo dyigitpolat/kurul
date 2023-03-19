@@ -1,4 +1,4 @@
-from language_model_handling.gpt4_client import GPT4Client
+from language_model_handling.openai_client import OpenAIClient
 from prompts.prompts import Prompts
 
 class ResponseRefinement:
@@ -7,11 +7,12 @@ class ResponseRefinement:
 
     def refine(self, chat_history, skepticism):
         refinement_prompt = Prompts.skepticism_refinement_prompt
-        assistant = GPT4Client()
+        assistant = OpenAIClient()
 
-        prompt_for_assistant = "--\n\n"
+        prompt_for_assistant = "\n\n--\n\n"
         prompt_for_assistant += chat_history.to_text()
         prompt_for_assistant += "\n\n--\n\n"
+        prompt_for_assistant += "Analyst:\n"
         prompt_for_assistant += skepticism
         prompt_for_assistant += "\n\n--\n\n"
         prompt_for_assistant += refinement_prompt

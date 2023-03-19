@@ -1,6 +1,6 @@
 class ChatHistory:
-    def __init__(self):
-        self.messages = []
+    def __init__(self, messages = []):
+        self.messages = list(messages)
     
     def to_text(self):
         text = ""

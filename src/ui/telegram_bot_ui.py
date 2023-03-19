@@ -1,6 +1,7 @@
 from kurul.kurul import *
 
 from telegram.ext import *
+import telegram
 
 class TelegramBotUI:
     def __init__(self, token, authorized_chat_ids):
@@ -15,6 +16,8 @@ class TelegramBotUI:
         message = update.message
         chat_id = message.chat_id
         text = message.text
+
+        await context.bot.send_chat_action(chat_id=chat_id, action=telegram.constants.ChatAction.TYPING)
 
         if chat_id in self.authorized_chats:
             response = self.kurul_sessions[chat_id].respond(text)
