@@ -2,7 +2,7 @@
 
 kurul leverages the power of OpenAI GPT-4 to provide high-quality responses in a friendly and interactive manner. kurul refines its responses using a pipeline of skepticism to ensure relevant and thoughtful conversations with users.
 
-kurul can be interacted thorugh a Telegram bot.
+kurul can be interacted through a Telegram bot.
 
 ## Dependencies
 
