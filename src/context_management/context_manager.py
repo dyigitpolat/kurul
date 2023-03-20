@@ -11,7 +11,7 @@ class ContextManager:
     def __partial_distill(self, chat_history, limit, head_length):
 
         if len(chat_history) > limit:
-            tail = ChatHistory(list(chat_history.messages[:-head_length]))
+            tail = ChatHistory(list(chat_history.messages[1:-head_length]))
             head = ChatHistory(list(chat_history.messages[-head_length:]))
             distilled_tail = ChatHistoryDistillation().distill(tail)
             chat_history.messages = list(distilled_tail.messages + head.messages)
@@ -24,7 +24,7 @@ class ContextManager:
         prompt = summarization_prompt_start
         for chat_history in self.chat_histories:
             prompt += "\n\n--\n\n"
-            prompt += chat_history.to_text()
+            prompt += chat_history.to_text().replace("user:::", "A:").replace("assistant:::", "B:")
             prompt += "\n\n--\n\n"
         prompt += summarization_prompt_end
 

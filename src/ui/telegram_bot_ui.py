@@ -3,6 +3,8 @@ from kurul.kurul import *
 from telegram.ext import *
 import telegram
 
+import asyncio
+
 class TelegramBotUI:
     def __init__(self, token, authorized_chat_ids):
         self.application = Application.builder().token(token).build()
@@ -17,13 +19,18 @@ class TelegramBotUI:
         chat_id = message.chat_id
         text = message.text
 
-        await context.bot.send_chat_action(chat_id=chat_id, action=telegram.constants.ChatAction.TYPING)
+        await context.bot.send_chat_action(
+            chat_id=chat_id, 
+            action=telegram.constants.ChatAction.TYPING)
 
-        if chat_id in self.authorized_chats:
-            response = self.kurul_sessions[chat_id].respond(text)
-            await context.bot.send_message(chat_id=chat_id, text=response)
-        else:
-            await context.bot.send_message(chat_id=chat_id, text=f"You are not authorized to use this bot. Chat id: {chat_id}")
+        try:
+            if chat_id in self.authorized_chats:
+                response = self.kurul_sessions[chat_id].respond(text)
+                await context.bot.send_message(chat_id=chat_id, text=response)
+            else:
+                await context.bot.send_message(chat_id=chat_id, text=f"You are not authorized to use this bot. Chat id: {chat_id}")
+        except:
+            await context.bot.send_message(chat_id=chat_id, text="Something went wrong. Please try again later.")
 
     def start(self):
         self.application.add_handler(MessageHandler(filters.TEXT, self.__message_handler))

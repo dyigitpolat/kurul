@@ -1,10 +1,17 @@
 from chat_history.chat_history import ChatHistory
 
 import openai
-import backoff
+import random
 
-@backoff.on_exception(backoff.expo, openai.error.RateLimitError, max_tries=10)
-def completions_with_backoff(**kwargs):
+from tenacity import (
+    retry,
+    stop_after_attempt,
+    wait_random_exponential,
+)  # for exponential backoff
+
+
+@retry(wait=wait_random_exponential(min=1, max=60), stop=stop_after_attempt(6))
+def completion_with_backoff(**kwargs):
     return openai.ChatCompletion.create(**kwargs)
 
 class OpenAIClient:
@@ -13,26 +20,24 @@ class OpenAIClient:
         self.model = model
 
     def respond(self, text):
+        print("\n((((")
+        print("Chat history length:\n", len(self.chat_history))
+        print("Query:\n", text)
         self.chat_history.append({"role": "user", "content": text})
         try:
-            response = completions_with_backoff(
+            response = completion_with_backoff(
                 model=self.model,
                 messages=list(self.chat_history.messages),
-                timeout=15
+                user=str(random.randint(0, 1000000000)),
             ).choices[0].message
-
-            print("\n---------\n")
-            print("Query:", text)
-            print("Response:", response.content)
-            print("\n---------\n")
             self.chat_history.append(response)
 
+            print("Response:\n", response.content)
+            print("))))\n")
             return response.content
         
         except Exception as e:
-            print("\n---------\n")
+            print("\n--\n")
             print(f"Error: {e}")
-            print("\n---------\n")
+            print("))))\n")
             return "No response."
-
-    
