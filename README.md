@@ -1,6 +1,6 @@
 # kurul
 
-kurul leverages the power of OpenAI GPT-4 to provide high-quality responses in a friendly and interactive manner. kurul refines its responses using a pipeline of skepticism to ensure relevant and thoughtful conversations with users.
+kurul leverages the OpenAI API to provide high-quality responses in a friendly and interactive manner. kurul refines its responses using a pipeline of skepticism to ensure relevant and thoughtful conversations with users.
 
 kurul can be interacted through a Telegram bot.
 
@@ -9,6 +9,7 @@ kurul can be interacted through a Telegram bot.
 - Python 3.10
 - python-telegram-bot
 - openai python package
+- backoff package
 
 ## Setup
 
@@ -57,9 +58,9 @@ The chatbot will automatically respond to messages sent by authorized users on t
 
 ## Architecture Overview
 
-kurul's core functionality is encapsulated in the `kurul` class. It uses a pipeline of skepticism to improve the quality of GPT-4 responses. Main components include:
+kurul's core functionality is encapsulated in the `kurul` class. It uses a pipeline of skepticism to improve the quality of Chat GPT responses. Main components include:
 
-- GPT-4 client for initial response generation
+- Chat GPT client for initial response generation
 - Context manager for handling conversations context
 - Skeptical prompt generation for creating skepticism queries
 - Response refinement based on the skepticism feedback
@@ -77,4 +78,4 @@ Please make sure to update tests as appropriate and follow the existing coding s
 ## Acknowledgments
 
 - [python-telegram-bot](https://github.com/python-telegram-bot/python-telegram-bot) for the Telegram integration.
-- [OpenAI](https://openai.com/) for the GPT-4 API.
+- [OpenAI](https://openai.com/) for the API.
