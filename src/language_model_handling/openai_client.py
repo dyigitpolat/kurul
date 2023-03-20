@@ -1,21 +1,25 @@
 from chat_history.chat_history import ChatHistory
 
 import openai
-import time
+import backoff
+
+@backoff.on_exception(backoff.expo, openai.error.RateLimitError, max_tries=10)
+def completions_with_backoff(**kwargs):
+    return openai.ChatCompletion.create(**kwargs)
 
 class OpenAIClient:
-    def __init__(self, model="gpt-4"):
+    def __init__(self, model="gpt-3.5-turbo"):
         self.chat_history = ChatHistory()
         self.model = model
 
     def respond(self, text):
         self.chat_history.append({"role": "user", "content": text})
         try:
-            response = openai.ChatCompletion.create(
+            response = completions_with_backoff(
                 model=self.model,
-                messages=list(self.chat_history.messages)
+                messages=list(self.chat_history.messages),
+                timeout=15
             ).choices[0].message
-            time.sleep(2)
 
             print("\n---------\n")
             print("Query:", text)
@@ -29,6 +33,6 @@ class OpenAIClient:
             print("\n---------\n")
             print(f"Error: {e}")
             print("\n---------\n")
-            return "I am having internal issues. Please try again."
+            return "No response."
 
     
