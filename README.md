@@ -9,7 +9,7 @@ kurul can be interacted through a Telegram bot.
 - Python 3.10
 - python-telegram-bot
 - openai python package
-- backoff package
+- tenacity package
 
 ## Setup
 
