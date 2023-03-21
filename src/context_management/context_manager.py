@@ -23,8 +23,9 @@ class ContextManager:
 
         prompt = summarization_prompt_start
         for chat_history in self.chat_histories:
+            chat_history_without_system_prompt = ChatHistory(list(chat_history.messages[1:]))
             prompt += "\n\n--\n\n"
-            prompt += chat_history.to_text().replace("user:::", "A:").replace("assistant:::", "B:")
+            prompt += chat_history_without_system_prompt.to_text().replace("user:::", "A:").replace("assistant:::", "B:")
             prompt += "\n\n--\n\n"
         prompt += summarization_prompt_end
 
@@ -33,7 +34,7 @@ class ContextManager:
 
     def update(self):
         for chat_history in self.chat_histories:
-            self.__partial_distill(chat_history, 7, 2)
+            self.__partial_distill(chat_history, 6, 2)
         
         self.__summarize_context()
         
