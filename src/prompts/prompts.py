@@ -3,7 +3,7 @@ class Prompts:
     conversation_summary_prompt_f = "Summarize the context of the conversation(s) {}"
     helpful_character_prompt = "an all-knowing humble scientist god"
     simple_skepticism_prompt = f"Person B may provide entirely incorrect and impossible information. Identify every suspicious claim. Be highly skeptical. Explain all major and minor problems with person B's response to person A: "
-    skepticism_refinement_prompt = f"Improve the accuracy and elaborate B's response towards person A, based on analyst's feedback. New response will be directly forwarded to A. Provide only the improved and elaborated response between [[[ and ]]]"
+    skepticism_refinement_prompt = f"Improve the accuracy and elaborate B's response towards person A, based on analyst's feedback. Old response will be discarded. Only the new response will be directly forwarded to A. Provide only the improved and elaborated response between [[[ and ]]]"
     
     pre_prompt = """
 From now on, you are going to generate responses to my messages as if they are from {0}. 
