@@ -6,7 +6,6 @@ from input_processing.input_processing import InputProcessor
 from output_processing.output_processing import OutputProcessor
 from chat_history.chat_history import ChatHistory
 from prompts.prompts import Prompts
-
 class Kurul:
     def __init__(self):
         self.first_assistant = OpenAIClient()
@@ -41,3 +40,14 @@ class Kurul:
 
         self.context_manager.update()
         return OutputProcessor().process(refined_response)
+    
+    def get_state_dict(self):
+        state_dict = {}
+        state_dict["message_history"] = self.first_assistant.chat_history.messages
+        state_dict["context_summary"] = self.context_manager.context_summary
+        return state_dict
+
+    def load_from_state_dict(self, state_dict):
+        self.first_assistant.chat_history.messages = state_dict["message_history"]
+        self.context_manager.context_summary = state_dict["context_summary"]
+        self.context_manager.chat_histories = [self.first_assistant.chat_history]
